@@ -18,10 +18,9 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 
-// Connect to DB inside the serverless function handler
 connectDB();
 
 app.use("/api/auth", authRoutes);
