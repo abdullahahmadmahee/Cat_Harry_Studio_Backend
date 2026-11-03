@@ -4,11 +4,12 @@ import {
   getUserBookings, 
   cancelBooking 
 } from "../controllers/bookingController";
+import { protect } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-router.post("/", createBooking);
-router.get("/user/:email", getUserBookings);
-router.patch("/:id/cancel", cancelBooking);
+router.post("/", protect, createBooking);
+router.get("/user/:email", protect, getUserBookings);
+router.patch("/:id/cancel", protect, cancelBooking);
 
 export default router;

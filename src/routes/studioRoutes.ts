@@ -7,14 +7,15 @@ import {
   updateStudio,
   deleteStudio
 } from "../controllers/studioController";
+import { protect } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-router.post("/", createStudio);
-router.get("/", getAllStudios);
-router.get("/:id", getStudioById);
-router.get("/host/:email", getStudiosByHost);
-router.put("/:id", updateStudio);
-router.delete("/:id", deleteStudio);
+router.post("/", protect, createStudio);
+router.get("/", getAllStudios); // Public
+router.get("/:id", getStudioById); // Public
+router.get("/host/:email", protect, getStudiosByHost);
+router.put("/:id", protect, updateStudio);
+router.delete("/:id", protect, deleteStudio);
 
 export default router;
