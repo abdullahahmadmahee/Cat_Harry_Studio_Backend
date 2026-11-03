@@ -34,7 +34,7 @@ export const createBooking = async (req: Request, res: Response): Promise<void> 
       startTime,
       endTime,
       totalPrice,
-      status: "Pending"
+      status: "Confirmed"
     });
 
     res.status(201).json({

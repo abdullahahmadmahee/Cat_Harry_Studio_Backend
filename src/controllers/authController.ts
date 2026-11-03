@@ -5,7 +5,7 @@ import { User } from "../models/User";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, photoUrl, password } = req.body;
+    const { name, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -19,7 +19,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const user = await User.create({
       name,
       email,
-      photoUrl,
       password: hashedPassword,
     });
 
@@ -36,7 +35,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     res.status(201).json({
       message: "Registration successful",
-      user: { id: user._id, name: user.name, email: user.email, photoUrl: user.photoUrl },
+      user: { id: user._id, name: user.name, email: user.email },
     });
   } catch (error) {
     console.error("Register Error:", error);
@@ -73,7 +72,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     res.status(200).json({
       message: "Login successful",
-      user: { id: user._id, name: user.name, email: user.email, photoUrl: user.photoUrl },
+      user: { id: user._id, name: user.name, email: user.email },
     });
   } catch (error) {
     console.error("Login Error:", error);
