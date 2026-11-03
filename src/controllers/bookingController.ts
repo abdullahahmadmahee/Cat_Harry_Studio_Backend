@@ -46,3 +46,39 @@ export const createBooking = async (req: Request, res: Response): Promise<void> 
     res.status(500).json({ message: "Failed to create booking." });
   }
 };
+
+export const getUserBookings = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const bookings = await Booking.find({ userEmail: req.params.email })
+      .populate("studioId", "title location image category")
+      .sort({ createdAt: -1 });
+      
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Get User Bookings Error:", error);
+    res.status(500).json({ message: "Failed to fetch user bookings." });
+  }
+};
+
+export const cancelBooking = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { status: "Cancelled" },
+      { new: true, runValidators: true }
+    );
+
+    if (!booking) {
+      res.status(404).json({ message: "Booking not found." });
+      return;
+    }
+
+    res.status(200).json({
+      message: "Booking cancelled successfully",
+      booking
+    });
+  } catch (error) {
+    console.error("Cancel Booking Error:", error);
+    res.status(500).json({ message: "Failed to cancel booking." });
+  }
+};
