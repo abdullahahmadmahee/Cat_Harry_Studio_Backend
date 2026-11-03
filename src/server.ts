@@ -21,6 +21,8 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+connectDB();
+
 app.use("/api/auth", authRoutes);
 app.use("/api/studios", studioRoutes);
 app.use("/api/bookings", bookingRoutes);
@@ -29,11 +31,10 @@ app.get("/", (req, res) => {
   res.send("StudioSpace API is running");
 });
 
-const startServer = async () => {
-  await connectDB();
+if (process.env.NODE_ENV !== "production") {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
-};
+}
 
-startServer();
+export default app;
