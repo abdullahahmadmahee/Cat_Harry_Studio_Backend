@@ -58,3 +58,42 @@ export const getStudiosByHost = async (req: Request, res: Response): Promise<voi
     res.status(500).json({ message: "Failed to fetch host studios." });
   }
 };
+
+export const updateStudio = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const updatedStudio = await Studio.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    
+    if (!updatedStudio) {
+      res.status(404).json({ message: "Studio not found." });
+      return;
+    }
+    
+    res.status(200).json({
+      message: "Studio updated successfully",
+      studio: updatedStudio
+    });
+  } catch (error) {
+    console.error("Update Studio Error:", error);
+    res.status(500).json({ message: "Failed to update studio." });
+  }
+};
+
+export const deleteStudio = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const deletedStudio = await Studio.findByIdAndDelete(req.params.id);
+    
+    if (!deletedStudio) {
+      res.status(404).json({ message: "Studio not found." });
+      return;
+    }
+    
+    res.status(200).json({ message: "Studio deleted successfully" });
+  } catch (error) {
+    console.error("Delete Studio Error:", error);
+    res.status(500).json({ message: "Failed to delete studio." });
+  }
+};
